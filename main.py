@@ -14,8 +14,14 @@ humidityB = 0
 
 temperatureSensor = dht.DHT11(machine.Pin(22))
 
-pumpA = machine.Pin(26, machine.Pin.OUT)
-pumpB = machine.Pin(27, machine.Pin.OUT)
+# pumpA = machine.Pin(26, machine.Pin.OUT)
+# pumpB = machine.Pin(27, machine.Pin.OUT)
+
+# 200/1000
+pumpA = machine.PWM(machine.Pin(27))
+pumpA.deinit()
+pumpB = machine.PWM(machine.Pin(26))
+pumpB.deinit()
 
 vent = machine.Pin(14, machine.Pin.OUT)
 lights = machine.Pin(13, machine.Pin.OUT)
@@ -121,8 +127,22 @@ def check():
 
 # Рулим железом
 def do():
-    pumpA.value(active['pumpA'])
-    pumpB.value(active['pumpB'])
+    # pumpA.value(active['pumpA'])
+    # pumpB.value(active['pumpB'])
+    if active['pumpA']:
+        pumpA.init()
+        pumpA.duty(200)
+        pumpA.freq(1000)
+    else:
+        pumpA.deinit()
+
+    if active['pumpB']:
+        pumpB.init()
+        pumpB.duty(200)
+        pumpB.freq(1000)
+    else:
+        pumpB.deinit()
+
     vent.value(active['vent'])
     lights.value(active['lights'])
 

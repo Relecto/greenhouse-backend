@@ -8,7 +8,10 @@ import machine
 import time
 
 humiditySensorA = machine.ADC(machine.Pin(32))
+humiditySensorA.atten(machine.ADC.ATTN_11DB)
 humiditySensorB = machine.ADC(machine.Pin(33))
+humiditySensorB.atten(machine.ADC.ATTN_11DB)
+
 humidityA = 0
 humidityB = 0
 
@@ -144,7 +147,7 @@ def do():
         pumpB.deinit()
 
     vent.value(active['vent'])
-    lights.value(active['lights'])
+    lights.value(not active['lights'])
 
 
 def try_sync_with_client_time(req):
